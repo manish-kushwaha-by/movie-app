@@ -18,6 +18,9 @@ const jwt = require("jsonwebtoken")
 // import routes for Users
 const userRoutes = require("./Routes/routesUsers")
 
+// import routes for Movies
+const moviesRoutes = require("./Routes/routesMovies")
+
 
 
 // Initializing the (Server)
@@ -45,9 +48,6 @@ app.get("/",(req,res) => {
 })
 
 
-// Default path for User routes/Controller
-app.use("/users",userRoutes);
-
 
 // Connecting to MongoDb Database using mongo-URI.
 // mongodb+srv://MKK9313:MKK9313@cluster0.weeu8ok.mongodb.net/<DATABASE_NAME>?retryWrites=true&w=majority
@@ -69,3 +69,16 @@ mongoose.connect(
 app.set("secret_key","qwertyuiop")
 
 
+
+
+const userValidation = (req, res, next) => {
+    jwt.verify(req.headers["x-access-token"],req.app.get('secret_key'),(error,decoded) => {
+            if(error) { next(error);  }
+            next();
+    })
+}
+
+
+// Default path for User routes/Controller
+app.use("/users",userRoutes);
+app.use("/movies",userValidation,moviesRoutes);

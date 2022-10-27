@@ -18,8 +18,53 @@ const create = (req, res, next) => {
 }
 
 
+const login = (req,res,next) => {
+    UserModel.findOne({email:req.body.email},(err,result) => {
+            if(err) { next(err); }
+            else{
+                //if(bcrypt.compare(req.body.password,result.password,null)){
+                bcrypt.compare(req.body.password,result.password,(error,result) => {
+                    if(error)       {   next(error) ; }
+                    // Generating the token using jwt sign fxn
+                    // 3 parameters
+                    //    1. Claims
+                    //    2. Secret Key
+                    //    3. Expiery Time of Token!!!
+                    const token = jwt.sign({
+                                                id:result._id
+                                            },
+                                            
+                                            req.app.get('secret_key'),
+                                            
+                                            {
+                                                expiresIn:"1H"// seconds: 120s
+                                            }
+                                          );
+                    res.status(200).json({message:"Successfully Logined in",data:{user:result,token:token}});
+                })    
+                
+                    
+                //}
+            }
+    })
+}
+
 
 // Export
-module.exports = {create};
+module.exports = {create,login};
 
 
+
+
+
+// const token = jwt.sign({
+                    //                             id:result._id
+                    //                         },
+                                            
+                    //                         req.app.get('secret_key'),
+                                            
+                    //                         {
+                    //                             expiresIn:"1H"
+                    //                         }
+                    // //                       );
+                    // res.status(200).json({message:"Successfully Logined in",data:{user:result,token:token}});
