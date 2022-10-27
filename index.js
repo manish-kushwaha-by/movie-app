@@ -70,7 +70,7 @@ app.set("secret_key","qwertyuiop")
 
 
 
-
+// make a function for GetAllMovies Api call to restrict unAuthorized user.
 const userValidation = (req, res, next) => {
     jwt.verify(req.headers["x-access-token"],req.app.get('secret_key'),(error,decoded) => {
             if(error) { next(error);  }

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken") // generating the token key and verifying th
 const MovieModel = require("../Models/movies") // for CURD Operations
 
 
+// Create Movie without any user token
 const create = (req, res, next) => {
     MovieModel.create({
         name:req.body.name,
@@ -12,6 +13,7 @@ const create = (req, res, next) => {
     })
 }
 
+// Get movie iff user have a valid token.
 const getAllMovies = (req,res,next) => {
     MovieModel.find({},(err,result) => {
         if(err) {   next(err); }

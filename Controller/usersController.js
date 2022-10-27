@@ -18,6 +18,7 @@ const create = (req, res, next) => {
 }
 
 
+// generate a token for getAllMovie method  (inside MovieController.js)
 const login = (req,res,next) => {
     UserModel.findOne({email:req.body.email},(err,result) => {
             if(err) { next(err); }

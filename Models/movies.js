@@ -2,7 +2,6 @@
 const mongoose = require('mongoose');
 
 // Creating a Schema on type of data communicating to mongodb
-
 const MovieSchema = new mongoose.Schema({
     name:{type:String,required:true},
     releaseDate:{type:Date,required:true}
